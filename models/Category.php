@@ -23,6 +23,16 @@ class Category extends \yii\db\ActiveRecord
         return 'category';
     }
 
+    public function getScheme()
+    {
+        return json_encode(trim(preg_replace('/\s\s+/', ' ', $this->scheme)));
+    }
+
+    public function setScheme($value)
+    {
+        $this->scheme= json_encode(trim(preg_replace('/\s\s+/', ' ', $value)));
+    }
+
     /**
      * @inheritdoc
      */

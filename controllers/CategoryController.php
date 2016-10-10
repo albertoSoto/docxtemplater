@@ -83,7 +83,7 @@ class CategoryController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
+        $model->scheme = json_encode(trim(preg_replace('/\s\s+/', ' ', $model->scheme)));
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {

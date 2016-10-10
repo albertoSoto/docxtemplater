@@ -34,30 +34,22 @@ $categories = ArrayHelper::map(\app\models\Category::find()->all(), 'id', 'name'
         $(function () {
             // Initialize the editor with a JSON schema
             JSONEditor.defaults.theme = 'bootstrap3';
+
+            var currentInfo = JSON.parse('<?=$model->content?>');
+            console.log("load:"+currentInfo);
             var editor = new JSONEditor(document.getElementById('editor_holder'), {
+                ajax: true,
                 schema: {
-                    type: "object",
-                    title: "Car",
-                    properties: {
-                        make: {
-                            type: "string",
-                            enum: [
-                                "Toyota",
-                                "BMW",
-                                "Honda",
-                                "Ford",
-                                "Chevy",
-                                "VW"
-                            ]
-                        },
-                        model: {
-                            type: "string"
-                        }
-                    }
-                }
+                    $ref: "../programacion.json"
+                    //format: "grid"
+                },
+                startval: currentInfo,
+                disable_edit_json:false
             });
             editor.on('change',function() {
-                $("#<?= Html::getInputId($model, 'content'); ?>").html(JSON.stringify(editor.getValue()));
+                var txtValue = JSON.stringify(editor.getValue());
+                console.log(txtValue);
+                $("#<?= Html::getInputId($model, 'content'); ?>").val(txtValue);
             });
         });
     </script>

@@ -1,0 +1,9 @@
+htaccess config in yii2 apps
+=======================================================
+
+http://www.codematrics.com/htaccess-in-yii2-basic-app/
+
+RESTAPI
+=======
+http://budiirawan.com/setup-restful-api-yii2/
+
