@@ -30,13 +30,15 @@ $categories = ArrayHelper::map(\app\models\Category::find()->all(), 'id', 'name'
         <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
     <?php ActiveForm::end(); ?>
+    <script type="application/json" id="important-data"><?=html_entity_decode($model->content)?></script>
     <script type="application/javascript">
         $(function () {
-            // Initialize the editor with a JSON schema
             JSONEditor.defaults.theme = 'bootstrap3';
-
-            var currentInfo = JSON.parse('<?=$model->content?>');
-            console.log("load:"+currentInfo);
+            var currentInfo =JSON.parse($("#important-data").html());
+            /*currentInfo = JSON.parse('<?=html_entity_decode($model->content)?>');
+             <?//json_encode(html_entity_decode($model->content), JSON_PRETTY_PRINT) ?>
+            */
+            console.log("load:" + currentInfo);
             var editor = new JSONEditor(document.getElementById('editor_holder'), {
                 ajax: true,
                 schema: {
@@ -44,11 +46,10 @@ $categories = ArrayHelper::map(\app\models\Category::find()->all(), 'id', 'name'
                     //format: "grid"
                 },
                 startval: currentInfo,
-                disable_edit_json:false
+                disable_edit_json: false
             });
-            editor.on('change',function() {
+            editor.on('change', function () {
                 var txtValue = JSON.stringify(editor.getValue());
-                console.log(txtValue);
                 $("#<?= Html::getInputId($model, 'content'); ?>").val(txtValue);
             });
         });

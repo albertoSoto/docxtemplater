@@ -55,7 +55,10 @@ class CategoryController extends Controller
             'model' => $this->findModel($id),
         ]);
     }
-
+    private function dbEncode($value)
+    {
+        return json_encode(trim(preg_replace('/\s\s+/', ' ', $value)));
+    }
     /**
      * Creates a new Category model.
      * If creation is successful, the browser will be redirected to the 'view' page.
@@ -64,7 +67,7 @@ class CategoryController extends Controller
     public function actionCreate()
     {
         $model = new Category();
-
+        $model->scheme = $this->dbEncode($model->scheme);
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
@@ -73,6 +76,8 @@ class CategoryController extends Controller
             ]);
         }
     }
+
+
 
     /**
      * Updates an existing Category model.
@@ -83,7 +88,7 @@ class CategoryController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        $model->scheme = json_encode(trim(preg_replace('/\s\s+/', ' ', $model->scheme)));
+        $model->scheme = $this->dbEncode($model->scheme);
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {

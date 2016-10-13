@@ -56,6 +56,15 @@ class TemplateController extends Controller
         ]);
     }
 
+    private function dbEncode($value)
+    {
+        $args = stripcslashes($value);
+        $other = htmlspecialchars($args,ENT_QUOTES);
+        $other2=htmlentities($args);
+        return htmlentities($args);
+        // return json_encode(trim(preg_replace('/\s\s+/', ' ',  htmlentities($value))));
+    }
+
     /**
      * Creates a new Template model.
      * If creation is successful, the browser will be redirected to the 'view' page.
@@ -64,8 +73,11 @@ class TemplateController extends Controller
     public function actionCreate()
     {
         $model = new Template();
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        $isContentLoaded = $model->load(Yii::$app->request->post());
+        if ($isContentLoaded) {
+            $model->content = $this->dbEncode($model->content);
+        }
+        if ($isContentLoaded && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
@@ -83,7 +95,7 @@ class TemplateController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
+        $model->content = $this->dbEncode($model->content);
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
