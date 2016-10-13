@@ -6,11 +6,11 @@
  * Time: 19:29
  */
 
-namespace app\controllers;
+namespace app\modules\api\controllers;
 use yii\rest\ActiveController;
 use linslin\yii2\curl;
 
-class DocContentController  extends ActiveController
+class ConfigController  extends ActiveController
 {
-    public $modelClass = 'app\models\Template';
+    public $modelClass = 'app\models\Category';
 }
